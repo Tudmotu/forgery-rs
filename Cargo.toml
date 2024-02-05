@@ -1,0 +1,45 @@
+[package]
+name = "forgery-rs"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "forgery"
+path = "src/main.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+hyper = { version = "1", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
+http-body-util = "0.1"
+hyper-util = { version = "0.1", features = ["full"] }
+dotenv = "0.15.0"
+revm-inspectors = { git = "https://github.com/paradigmxyz/evm-inspectors.git" }
+forge = { git = "https://github.com/foundry-rs/foundry.git", branch = "master" }
+foundry-evm-core = { git = "https://github.com/foundry-rs/foundry.git", branch = "master" }
+foundry-common = { git = "https://github.com/foundry-rs/foundry.git", branch = "master" }
+foundry-config = { git = "https://github.com/foundry-rs/foundry.git", branch = "master" }
+alloy-providers = { git = "https://github.com/alloy-rs/alloy.git", branch = "main" }
+alloy-primitives = "0.6.2"
+foundry-compilers = "0.3.1"
+eyre = "0.6.12"
+log = "0.4.20"
+alloy-dyn-abi = "0.6.2"
+alloy-sol-macro = "0.6.2"
+alloy-sol-types = "0.6.2"
+
+[patch.crates-io]
+ethers-core = { git = "https://github.com/gakonst/ethers-rs", rev = "f0e5b194f09c533feb10d1a686ddb9e5946ec107" }
+ethers-contract = { git = "https://github.com/gakonst/ethers-rs", rev = "f0e5b194f09c533feb10d1a686ddb9e5946ec107" }
+ethers-contract-abigen = { git = "https://github.com/gakonst/ethers-rs", rev = "f0e5b194f09c533feb10d1a686ddb9e5946ec107" }
+ethers-providers = { git = "https://github.com/gakonst/ethers-rs", rev = "f0e5b194f09c533feb10d1a686ddb9e5946ec107" }
+ethers-signers = { git = "https://github.com/gakonst/ethers-rs", rev = "f0e5b194f09c533feb10d1a686ddb9e5946ec107" }
+ethers-middleware = { git = "https://github.com/gakonst/ethers-rs", rev = "f0e5b194f09c533feb10d1a686ddb9e5946ec107" }
+
+revm = { git = "https://github.com/bluealloy/revm", branch = "reth_freeze" }
+revm-primitives = { git = "https://github.com/bluealloy/revm", branch = "reth_freeze" }
+revm-interpreter = { git = "https://github.com/bluealloy/revm", branch = "reth_freeze" }
+revm-precompile = { git = "https://github.com/bluealloy/revm", branch = "reth_freeze" }
+
+revm-inspectors = { git = "https://github.com/paradigmxyz/evm-inspectors" }

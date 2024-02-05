@@ -1,0 +1,607 @@
+<!DOCTYPE HTML>
+<html lang="en" class="rust" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Forgery          </title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "rust";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('rust')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="intro/core-api.html"><strong aria-hidden="true">1.1.</strong> Core API</a></li></ol></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="quickstart.html"><strong aria-hidden="true">3.</strong> Quickstart</a></li><li class="chapter-item expanded "><a href="forgery-sdk.html"><strong aria-hidden="true">4.</strong> Forgery SDK</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="forgery-sdk/server.html"><strong aria-hidden="true">4.1.</strong> Server contract</a></li><li class="chapter-item expanded "><a href="forgery-sdk/router.html"><strong aria-hidden="true">4.2.</strong> Router</a></li><li class="chapter-item expanded "><a href="forgery-sdk/request-response.html"><strong aria-hidden="true">4.3.</strong> Request & Response</a></li><li class="chapter-item expanded "><a href="forgery-sdk/json-parser.html"><strong aria-hidden="true">4.4.</strong> JSONBodyParser</a></li><li class="chapter-item expanded "><a href="forgery-sdk/json-writer.html"><strong aria-hidden="true">4.5.</strong> JSONBodyWriter</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Forgery          </h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/Tudmotu/forgery-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="./banner.png" alt="blue haired anime girl forging a letter" /></p>
+<h1 id="-forgery"><a class="header" href="#-forgery">✍️ Forgery</a></h1>
+<p>Forgery is a Solidity web-server runtime written in Rust and based on the <code>foundry-rs</code>
+stack by Paradigm. It implements a fully-featured HTTP framework alongside
+Foundry's suite of tools and cheatcodes. If you are unfamiliar with Foundry,
+it is highly recommended to read up on it, and specifically
+<a href="https://book.getfoundry.sh/forge/">Forge</a>, Foundry's scripting environment.</p>
+<h2 id="-wtf"><a class="header" href="#-wtf">🤔 Wtf</a></h2>
+<p>Write Solidity code as your backend, while running on a forked Foundry
+environment. This lets you interact with contracts directly, efficiently
+retrieve information onchain and use Foundry's cheatcodes to simulate
+transactions, mock internal calls and more.</p>
+<p>Web3 backends today are usually written in languages not fit for smart contract
+interactions. JSON ABIs and awkward async APIs encourage convoluted code with
+inconsistent behavior. Instead, why not write Solidity directly, use Solidity
+interfaces and execute in a completely synchronous way, <em>excatly how it would
+behave onchain</em>.</p>
+<p>For example, a Uniswap price endpoint would be trivially implemented in
+Forgery:</p>
+<pre><code class="language-solidity">contract Index is Server {
+    using JSONBodyParser for Request;
+    using JSONBodyWriter for Response;
+
+    QuoterV2 quoter = QuoterV2(0x61fFE014bA17989E743c5F6cB21bF9697530B21e);
+
+    function start () external override {
+        router.post('/quote', quote);
+    }
+
+    function quote (
+        Request calldata request
+    ) public {
+        address[] memory tokens = request.json().at('tokens').asAddressArray();
+        uint amountIn = request.json().at('amountIn').asUint();
+        uint fee = request.json().at('fee').asUint();
+
+        (uint amountOut,,,) = quoter.quoteExactInputSingle(
+            QuoterV2.QuoteExactInputSingleParams({
+                tokenIn: tokens[0],
+                tokenOut: tokens[1],
+                amountIn: amountIn,
+                fee: uint24(fee),
+                sqrtPriceLimitX96: 0
+            })
+        );
+
+        response.status = 200;
+        response.header('content-type', 'application/json');
+        response.write('amountOut', amountOut);
+    }
+}
+</code></pre>
+<p>Anyone who has tried implementing the same feature using Node.js, Python or Rust,
+knows how awkward and involved it would be.</p>
+<p>Forgery is the native web3 backend.</p>
+<h2 id="-how-it-works"><a class="header" href="#-how-it-works">🔨 How it works</a></h2>
+<p>Under the hood Forgery is based on <a href="https://book.getfoundry.sh/">Foundry</a> and
+<a href="https://hyper.rs/">Hyper</a>. Together a new Solidity runtime is born, one that
+merges web2 and web3 seamlessly.</p>
+<p>Forgery sets up a low overhead Hyper instance while running a Foundry EVM
+instance on the main thread. Your contracts are deployed on the Foundry EVM
+instance and the Hyper server communicates with your contracts by broadcasting
+transations.</p>
+<p>Every request is converted into ABI-encoded transaction using
+<a href="https://github.com/alloy-rs/core">Alloy</a>, which is then passed into the
+Solidity runtime as calldata. The contract responds with an ABI-encoded response
+which is converted into an HTTP response that is then sent back to the user.</p>
+<p>In addition, <a href="./forgery-sdk.html">Forgery SDK</a> is a framework which lets you write
+web-servers intuitively in a familiar way akin to other popular web frameworks.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="core-api"><a class="header" href="#core-api">Core API</a></h1>
+<p>The Forgery Core API is a simple Solidity interface that must be implemented in
+order for Forgery to communicate properly with your backend.</p>
+<div class="warning">
+For most use cases it is probably best to use a framework such as <a href="intro/../forgery-sdk.html">Forgery SDK</a>
+instead of directly interfacing with the Forgery Core API.<br>
+The API is documented
+here for posterity but is not intended to be used directly.
+</div>
+<h2 id="webserver-interface"><a class="header" href="#webserver-interface">Webserver interface</a></h2>
+<p>Forgery requires you to implement the following:</p>
+<ol>
+<li>You entrypoint contract must be located at <code>./src/Index.sol</code></li>
+<li>The contract must implement a <code>start()</code> function</li>
+<li>The contract must implement a <code>server(Request calldata) returns (Response memory)</code> function</li>
+</ol>
+<p>Here is the expected interface:</p>
+<pre><code class="language-solidity">interface ForgeryServer {
+    struct SolHttpHeader {
+        string key;
+        string value;
+    }
+
+    struct SolHttpRequest {
+        string method;
+        string uri;
+        SolHttpHeader[] headers;
+        bytes body;
+    }
+
+    struct SolHttpResponse {
+        uint16 status;
+        SolHttpHeader[] headers;
+        bytes body;
+    }
+
+    function start () external;
+    function serve (SolHttpRequest calldata) external returns (SolHttpResponse memory);
+}
+</code></pre>
+<h3 id="start"><a class="header" href="#start"><code>start()</code></a></h3>
+<p>This method is called on deployment. Whenever you start up your server, your
+contract is deployed on the Foundry instance. This method will run <em>once</em>, right
+after the server starts up, but before it starts listening on any connections.</p>
+<h3 id="serve"><a class="header" href="#serve"><code>serve()</code></a></h3>
+<p>This method will be executed for <em>every</em> incoming request. This is the main
+entrypoint into your backend. It is usually recommended to use some sort of
+router helper to help manage different endpoint, such as the one available in
+the <a href="intro/../forgery-sdk.html">Forgery SDK</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<p>Installation is done from source currently. We provide a helper script that will
+install Forgery using cargo by cloning the repo and compiling locally. It might
+take a couple of minutes to complete.</p>
+<h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
+<p>You will need the following tools installed:</p>
+<ul>
+<li>bash</li>
+<li>curl</li>
+<li>git</li>
+<li>Rust + Cargo</li>
+</ul>
+<h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
+<h3 id="helper"><a class="header" href="#helper">Helper</a></h3>
+<p>Use the helper script:</p>
+<pre><code class="language-console">curl https://github.com/Tudmotu/forgery-rs/blob/main/getforgery.sh | bash
+</code></pre>
+<h3 id="manually"><a class="header" href="#manually">Manually</a></h3>
+<p>Clone the git repo:</p>
+<pre><code class="language-console">git clone https://github.com/Tudmotu/forgery-rs.git
+</code></pre>
+<p>Inside the repo, install using Cargo:</p>
+<pre><code class="language-console">cargo install --locked --path .
+</code></pre>
+<p>Optionally, add the Cargo binary directory to your <code>$PATH</code> if it's not already
+included:</p>
+<pre><code class="language-console">echo 'export PATH=$PATH:~/.cargo/bin' &gt;&gt; ~/.zshrc
+</code></pre>
+<div class="warning">
+NOTE:<br>
+This command might vary depending on your OS and shell. This instruction
+assumes a POSIX OS with zsh.
+</div>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart"><a class="header" href="#quickstart">Quickstart</a></h1>
+<p>To start writing Forgery backends, you will first need to <a href="./installation.html">install Forgery</a>.
+If you are following the <a href="./intro/core-api.html">Core API</a>, all you need is to
+implement the <code>src/Index.sol</code> contract. This is not recommended ― the preferred
+method is using a framework such as <a href="./forgery-sdk.html">Forgery SDK</a>.</p>
+<p>Otherwise, it is recommended to use the <a href="https://github.com/Tudmotu/forgery-boilerplate">Forgery boilerplate</a>.
+The boilerplate includes a simple example contract with tests, which should get
+you up an running in no time.</p>
+<p>Technically speaking, a Forgery project is simply a Foundry Forge project. This
+means you can configure it using <code>foundry.toml</code> and install dependencies using
+<code>forge install</code>.</p>
+<p>The <code>forgery</code> command includes a utility for generating a basic example project
+based on the <code>forgery-boilerplate</code> repo. This utility requires <code>forge</code> to be
+installed. Follow the <a href="https://book.getfoundry.sh/getting-started/installation">Foundry docs</a>
+for instructions. Once cloned, treat the Forgery project like any other Forge project.</p>
+<pre><code class="language-console">forgery init
+</code></pre>
+<p>This command will generate the project inside the current working directory,
+similar to <code>forge init</code>.</p>
+<p>Make sure to create a <code>.env</code> file with <code>FORGERY_RPC</code> configured.</p>
+<p>Now all that is left is to start modifying <code>Index.sol</code> to implement the desired
+logic.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="forgery-sdk"><a class="header" href="#forgery-sdk">Forgery SDK</a></h1>
+<p>The Forgery SDK is meant to be a fully-fledged web framework for Forgery.</p>
+<p>Its use is <em>optional</em>, though highly recommended.</p>
+<p>It introduces a simple API that would be somewhat familiar for those coming with
+a background in other web frameworks.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The main entry point implements an abstract <code>Server</code> contract. The <code>Server</code>
+contract utilizes a <code>Router</code> to direct requests to their endpoint
+implementations.
+The <code>Request</code> object is kept in the calldata to reduce overhead, while the
+<code>Response</code> object is copied into contract storage for easier manipulation.
+In addition, Forgery SDK provides two utilities for working with JSONs:
+<code>JSONBodyParser</code> and <code>JSONBodyWriter</code>. These are meant to help parse &amp; generate
+JSON objects from the <code>Request</code> and <code>Response</code> objects respectively.
+Other than that, the <code>Server</code> contract exposes the Foundry cheatcodes via <code>vm</code>,
+similar to Forge scripts or tests.</p>
+<h2 id="hello-world"><a class="header" href="#hello-world">Hello, world</a></h2>
+<p>A basic example of a Forgery SDK contract might look like so:</p>
+<pre><code class="language-solidity">contract Index is Server {
+    function start () external override {
+        router.get('/hello', hello);
+    }
+
+    function hello (
+        Request calldata request
+    ) internal {
+        response.status = 200;
+        response.header('content-type', 'text/plain');
+        response.body = 'Hello, world';
+    }
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="server-contract"><a class="header" href="#server-contract">Server contract</a></h1>
+<p>The <code>Server</code> contract implements the basic structure of a Forgery app.
+It instantiates a <code>Router</code> for you which lets you easily map paths to functions.
+The <code>Router</code> expects functions with <code>(Request calldata)</code> signatures.</p>
+<p>To use the <code>Server</code> contract, import it and inherit from it:</p>
+<pre><code class="language-solidity">import 'forgery-sdk/Server.sol';
+
+contract Index is Server {
+    function start () external override {
+        router.get('/hello', hello);
+    }
+
+    function hello (
+        Request calldata request
+    ) public {
+        // ...
+    }
+}
+</code></pre>
+<p>The <code>start()</code> function is executed when the server starts up. This is where you
+would usually register your routes using the <code>Router</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="router"><a class="header" href="#router">Router</a></h1>
+<p>The <code>Router</code> object lets you map between routes and functions.
+It is a user-defined Solidity type which saves a mapping of paths to functions
+per HTTP method.</p>
+<p>The <code>Router</code> object expects your routes to comply with the following signature:</p>
+<pre><code class="language-solidity">function routeName (Request calldata) external;
+</code></pre>
+<p>The router does not execute routes on its own. It is only used as an abstraction
+over a nested struct datastructure. Its purpose is convenience. The actual
+executor is the <code>Server</code> contract.</p>
+<p>The <code>Router</code> API exposes functions to register routes for each HTTP method. You
+would usually register the routes in the <code>start()</code> function.</p>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<pre><code class="language-solidity">import 'forgery-sdk/Server.sol';
+
+contract Index is Server {
+    function start () external override {
+        router.get('/query', queryOrders);
+        router.post('/create', createOrder);
+        router.put('/replace', replaceOrder);
+        router.patch('/update', updateOrder);
+        router.del('/delete', deleteOrder);
+    }
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="request--response"><a class="header" href="#request--response">Request &amp; Response</a></h1>
+<p>The <code>Request</code> and <code>Response</code> objects are simple structs with added user-defined
+Solidity methods.</p>
+<p>These structs are very simple and have the following definitions:</p>
+<pre><code class="language-solidity">struct Header {
+    string key;
+    string value;
+}
+
+struct Request {
+    string method;
+    string uri;
+    Header[] headers;
+    bytes body;
+}
+
+struct Response {
+    uint16 status;
+    Header[] headers;
+    bytes body;
+}
+</code></pre>
+<p>In addition, they each have a method to help read/write headers.</p>
+<h2 id="request"><a class="header" href="#request"><code>Request</code></a></h2>
+<pre><code class="language-solidity">contract Index is Server {
+    // ...
+
+    function hello (
+        Request calldata request
+    ) public {
+        string memory contentType = request.header('content-type');
+    }
+}
+</code></pre>
+<h2 id="response"><a class="header" href="#response"><code>Response</code></a></h2>
+<pre><code class="language-solidity">contract Index is Server {
+    // ...
+
+    function hello (
+        Request calldata request
+    ) public {
+        response.header('content-type', 'application/json');
+    }
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="jsonbodyparser"><a class="header" href="#jsonbodyparser"><code>JSONBodyParser</code></a></h1>
+<p>The <code>JSONBodyParser</code> is a library meant to be used in conjunction with the
+<code>Request</code> struct. This library adds convenience methods for reading JSON-encoded
+request bodies.</p>
+<p>The implementation is based on Foundry JSON manipulation cheatcodes and
+therefore should be relatively performant.</p>
+<p>The API should feel similar to other typed-languages JSON handling utils.</p>
+<h2 id="example-1"><a class="header" href="#example-1">Example</a></h2>
+<p>Let's assume the request contains the following JSON body:</p>
+<pre><code class="language-json">{
+    "user": {
+        "address": "0x61880628e88b391C0161225887D65087EF5bD19B",
+        "ens": "dog.eth"
+    },
+    "tokens": [
+        "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    ]
+}
+</code></pre>
+<p>We could read the values like so:</p>
+<pre><code class="language-solidity">import 'forgery-sdk/JSONBodyParser.sol';
+
+contract Index is Server {
+    using JSONBodyParser for Request;
+
+    // ...
+
+    function myRoute (
+        Request calldata request
+    ) public {
+        address userAddress = request.json().at('user').at('address').asAddress();
+        string memory ens = request.json().at('user').at('ens').asString();
+        address[] memory tokens = request.json().at('tokens').asAddressArray();
+
+        // ...
+    }
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="jsonbodywriter"><a class="header" href="#jsonbodywriter"><code>JSONBodyWriter</code></a></h1>
+<p>The <code>JSONBodyWriter</code> is a library meant to be used in conjunction with the
+<code>Response</code> struct. This library adds convenience methods for writing JSON-encoded
+response bodies.</p>
+<p>The implementation is based on Foundry JSON manipulation cheatcodes and
+therefore should be relatively performant.</p>
+<p>This API is slightly awkward due to some Solidity and Foundry design choices.
+The main inconvenience is encoding custom objects/structs into JSON which
+requires a slightly more involved API. To learn how to serialize objects, check
+out the <a href="https://book.getfoundry.sh/cheatcodes/serialize-json">Foundry documentation</a> about <code>vm.serializeJson()</code>.</p>
+<h2 id="example-2"><a class="header" href="#example-2">Example</a></h2>
+<p>Let's assume we want to write the following JSON to the response body:</p>
+<pre><code class="language-json">{
+    "user": {
+        "address": "0x61880628e88b391C0161225887D65087EF5bD19B",
+        "ens": "dog.eth"
+    },
+    "tokens": [
+        "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    ]
+}
+</code></pre>
+<p>We would do it like so:</p>
+<pre><code class="language-solidity">import 'forgery-sdk/JSONBodyWriter.sol';
+
+contract Index is Server {
+    using JSONBodyWriter for Response;
+
+    // ...
+
+    function myRoute (
+        Request calldata request
+    ) public {
+        // ...
+
+        address[] memory tokens = new address[](2);
+        tokens[0] = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
+        tokens[1] = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+        response.write('tokens', tokens);
+
+        string memory userObject = vm.serializeAddress('user object', 'address', 0x61880628e88b391C0161225887D65087EF5bD19B);
+        userObject = vm.serializeString('user object', 'ens', 'dog.eth');
+        response.write('user', userObject);
+    }
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/solidity-highlight.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

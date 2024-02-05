@@ -1,0 +1,17 @@
+[book]
+authors = ["Tudmotu"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Forgery          "
+
+[build]
+build-dir = "../docs/"
+
+[output.html]
+default-theme = "rust"
+git-repository-url = "https://github.com/Tudmotu/forgery-rs"
+git-repository-icon = "fa-github"
+additional-js = [
+    "theme/solidity-highlight.js"
+]
