@@ -19,18 +19,28 @@ This assumes you have Rust, Cargo and Foundry installed. Follow the
 installation instructions.
 Compilation might take a few minutes depending on your machine.
 
+
+Install using the script (see requirements below):
 ```console
 curl -L https://raw.githubusercontent.com/Tudmotu/forgery-rs/main/getforgery.sh | bash
 ```
+
+Create a directory for your project and change to it:
 ```console
 mkdir myproject && cd myproject
 ```
+
+Generate the Forgery example project:
 ```console
 forgery init
 ```
+
+Configure your RPC provider (required):
 ```console
 echo 'FORGERY_RPC=<YOUR_RPC>' > .env
 ```
+
+Run the server:
 ```console
 forgery
 ```
@@ -43,6 +53,16 @@ Should show the following output:
 Compiler run successful!
 ... done!
 Listening on port: 3000
+```
+
+You can test it out using `curl`:
+```console
+curl http://localhost:3000/
+```
+
+You should get this response:
+```
+Hello, world!
 ```
 
 Technically speaking, a Forgery project is simply a Foundry Forge project. This
@@ -60,6 +80,7 @@ You will need the following tools installed:
 - curl
 - git
 - Rust + Cargo
+- Foundry
 
 ### Installation
 #### Helper
